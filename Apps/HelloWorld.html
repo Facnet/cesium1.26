@@ -26,7 +26,7 @@
 			timeline : false,
 			fullscreenButton : false,
 			baseLayerPicker : false,
-			homeButton : false,		
+			//homeButton : false,					
 			imageryProvider : Cesium.createOpenStreetMapImageryProvider(
 			{
 				url : 'https://a.tile.openstreetmap.org/'
@@ -48,12 +48,33 @@
 		}));
 
 		// Start off looking at Australia.
-		viewer.camera.setView(
-		{
-			destination: Cesium.Rectangle.fromDegrees(114.591, -45.837, 148.970, -5.730)
+		//viewer.camera.setView(
+		//{			
+			//destination: Cesium.Rectangle.fromDegrees(114.591, -45.837, 148.970, -5.730)
+			//destination: Cesium.Rectangle.fromDegrees(54.591, 55.837, 55.970, 15.730)
+		//	destination : Cesium.Cartesian3.fromDegrees(55.97, 54.74, 15000.0),
+		//	 orientation: {
+		//		heading : Cesium.Math.toRadians(0.0), // east, default value is 0.0 (north)
+		//		pitch : Cesium.Math.toRadians(-90),    // default value (looking down)
+		//		roll : 0.0                             // default value
+		//	}
+		//});
+		
+		viewer.camera.setView({
+			destination : Cesium.Cartesian3.fromDegrees(55.97, 54.74, 15000.0),
+			orientation : {
+				direction : new Cesium.Cartesian3(-0.04231243104240401, -0.20123236049443421, -0.97862924300734),
+				up : new Cesium.Cartesian3(-0.47934589305293746, -0.8553216253114552, 0.1966022179118339)
+			}
 		});
-	
-	
+
+		//var west = Cesium.Math.toRadians(54.0);
+		//var south = Cesium.Math.toRadians(38.0);
+		//var east = Cesium.Math.toRadians(55.0);
+		//var north = Cesium.Math.toRadians(42.0);
+		//var extent = new Cesium.Extent(west, south, east, north);
+		//camera.viewExtent(extent, Cesium.Ellipsoid.WGS84);
+
   </script>
 </body>
 </html>
