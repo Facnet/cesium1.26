@@ -54,7 +54,15 @@
             roll : 0.0
         }
 		});
-
+		var corp6 = viewer.entities.add({
+			position : Cesium.Cartesian3.fromDegrees(55.9409900, 54.725000),
+			name: '6 корпус',
+			model : {
+				uri : 'Scene.gltf',
+				scale : 1000.0
+			}
+		});
+		//viewer.trackedEntity = corp6;
   </script>
 </body>
 </html>
