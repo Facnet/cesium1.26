@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<!-- Use correct character set. -->
+		<meta charset="utf-8">
+		<!-- Tell IE to use the latest, best version. -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<title>Геоинформационная модель</title>
+		<script src="../Build/Cesium/Cesium.js"></script>		
+		
+		<style>
+			@import url(../Build/Cesium/Widgets/widgets.css);
+			html, body, #cesiumContainer 
+			{
+			 width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+			}			
+			
+			body {
+				background: #000;
+				color: #eee;
+				font-family: sans-serif;
+				font-size: 9pt;				
+			}
+			#toolbar {
+				margin: 5px;
+				padding: 2px 5px;
+				position: absolute;
+				top: 2px;
+			}
+			#toolbar {
+				background: rgba(42, 42, 42, 0.8);
+				padding: 4px;
+				border-radius: 4px;
+			}
+			#toolbar input {
+				vertical-align: middle;
+				padding-top: 2px;
+				padding-bottom: 2px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="cesiumContainer"></div>
+		
+		<div id="toolbar">
+			<p><select id="objects" name="objects[]" onchange='addatr(this.options[this.selectedIndex].value);'>
+			<option value="0">Выберете</option>
+			<option value="1">Жилой комплекс "Радуга"</option>
+			<option value="2">Парки</option>
+			<option value="3">Образование</option>
+			<option value="4">Госучереждения</option>
+			</select></p>
+		</div>
+		
+		<script>	  
+			Cesium.BingMapsApi.defaultKey = 'XmX41QSeXHcthjnVEhhC~h30NNjN6tXJjc7_2PKSDTQ~Al5vTtGeQiBVR_963RCCLRyi559VqGulX7XaTXdRZovRAV2JGzuFowsVZgq4PNec';
+			var viewer = new Cesium.Viewer('cesiumContainer',{
+				animation : false,
+				timeline : false,
+				fullscreenButton : false,
+				baseLayerPicker : false,
+				//homeButton : false,					
+				imageryProvider : Cesium.createOpenStreetMapImageryProvider(
+				{
+					url : 'https://a.tile.openstreetmap.org/'
+				})			
+			});					
+			
+			var imageryLayers = viewer.imageryLayers;
+			var geoWmsLayer = new Cesium.WebMapServiceImageryProvider({
+				url: 'http://localhost:8081/geoserver/hk_build/wms',
+				layers : 'hk_build:building_polygon_Clip',
+				parameters : {
+					service : 'WMS', 
+					version : '1.1.0', 
+					request : 'GetMap', 
+					styles : '', 
+					format : 'image/png',
+					srs : 'EPSG:3857',
+					transparent : true
+				},
+				proxy: new Cesium.DefaultProxy('/proxy/')
+			});
+			imageryLayers.addImageryProvider(geoWmsLayer);
+			
+			
+			
+			
+			viewer.camera.setView({
+				destination : Cesium.Cartesian3.fromDegrees(53.5021, 54.4711, 350.0),
+				orientation : {
+				heading : Cesium.Math.toRadians(20.0),
+				pitch : Cesium.Math.toRadians(-35.0),
+				roll : 0.0
+			}
+			});
+			
+			var house1 = viewer.entities.add({
+				position : Cesium.Cartesian3.fromDegrees(53.5055, 54.4759),
+				name: 'Дом №1',
+				model : {
+					uri : 'house1.gltf',
+					scale : 600.0
+				}
+			});
+			//viewer.trackedEntity = corp6;	
+			
+			house1.description = '<div><p><img src="1_komnt.jpg"></p></div>';
+			
+			var toolbar = document.getElementById('toolbar');
+			var addnewatr = document.createElement("div");
+			addnewatr.id = "addnewatr";
+			
+			function showOrHide(idhouse) 
+			{
+				idhouse = document.getElementById(idhouse);
+				if (idhouse.checked) 
+				{
+					house1.show = true;
+				}
+				else 
+				{
+					house1.show = false;
+				}
+			}
+			
+			function addatr (idatr)
+			{
+				if (idatr == "0")
+				{
+					try
+					{
+						toolbar.removeChild(addnewatr);	
+						addnewatr = document.createElement("div");
+						//addnewatr.id = "addnewatr";
+					}
+					catch(e){}
+				}
+				if (idatr == "1")
+				{			
+					//try
+					//{
+						//toolbar.removeChild(addnewatr);	
+						//var addnewatr = document.createElement("div");
+						//addnewatr.id = "addnewatr";
+					//}
+					//catch(e){}		
+					
+					toolbar.appendChild(addnewatr);
+					
+					var atr = document.createElement("input");
+					atr.type = "checkbox";
+					atr.id = "house_1";
+					atr.onchange = function () { showOrHide("house_1") };
+					atr.checked = true;
+					addnewatr.appendChild(atr);
+				}				
+			}
+			
+			
+	  </script>
+	</body>	
+</html>
